@@ -32,7 +32,7 @@ namespace Tool_BV
         public void SetTotal_2(string name, double total)
         {
             lbl_2.Text = name + ":";
-            lblTotal_2.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", total) + " VNĐâ";
+            lblTotal_2.Text = string.Format(new CultureInfo("vi-VN"), "{0:#,##0}", total) + " VNĐ";
         }
     }
 }
