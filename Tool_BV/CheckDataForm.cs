@@ -1,6 +1,8 @@
 ﻿using ExcelDataReader;
 using System;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -289,59 +291,87 @@ namespace Tool_BV
 
         private void chứcNăngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Tổng chi
-            if(dtgv1.DataSource != null || dtgv2.DataSource != null)
-            {
-                if (dtgv1.DataSource != null)
-                {
-                    DataTable dt1 = tableCollection1[cboSheet1.SelectedItem.ToString()];
-                    DataRow[] rows_1 = dt1.Select();
-                    double total_1 = 0;
-
-                    if (dt1.Columns.Contains("T_TONGCHI"))
-                    {
-                        var result = from t1 in rows_1 select new { total = t1["T_TONGCHI"] };
-                        total_1 = result.AsEnumerable().Sum(t1 => Convert.ToDouble(t1.total));
-                    }
-                    else if (dt1.Columns.Contains("Tổng chi"))
-                    {
-                        var result = from t1 in rows_1 select new { total = t1["Tổng chi"] };
-                        total_1 = result.AsEnumerable().Sum(t1 => Convert.ToDouble(t1.total));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Dữ liệu trong file tải lên không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    functionsForm.SetTotal_1(cboSheet1.Text, total_1);
-                }
-
-                if (dtgv2.DataSource != null)
-                {
-                    DataTable dt2 = tableCollection2[cboSheet2.SelectedItem.ToString()];
-                    DataRow[] rows_2 = dt2.Select();
-                    double total_2 = 0;
-
-                    if (dt2.Columns.Contains("T_TONGCHI"))
-                    {
-                        var result = from t2 in rows_2 select new { total = t2["T_TONGCHI"] };
-                        total_2 = result.AsEnumerable().Sum(t2 => Convert.ToDouble(t2.total));
-                    }
-                    else if (dt2.Columns.Contains("Tổng chi"))
-                    {
-                        var result = from t2 in rows_2 select new { total = t2["Tổng chi"] };
-                        total_2 = result.AsEnumerable().Sum(t2 => Convert.ToDouble(t2.total));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Dữ liệu trong file tải lên không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    functionsForm.SetTotal_2(cboSheet2.Text, total_2);
-                }
-            }
             
-            functionsForm.ShowDialog();
+        }
+
+        private void menuStrip1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics mgraphics = e.Graphics;
+            Pen pen = new Pen(Color.FromArgb(96, 155, 173), 1);
+
+            Rectangle area = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            LinearGradientBrush lgb = new LinearGradientBrush(area, Color.FromArgb(96, 155, 173), Color.FromArgb(245, 251, 251), LinearGradientMode.Vertical);
+            mgraphics.FillRectangle(lgb, area);
+            mgraphics.DrawRectangle(pen, area);
+        }
+
+        private void CheckDataForm_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics mgraphics = e.Graphics;
+            Pen pen = new Pen(Color.FromArgb(96, 155, 173), 1);
+
+            Rectangle area = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+            LinearGradientBrush lgb = new LinearGradientBrush(area, Color.FromArgb(96, 155, 173), Color.FromArgb(245, 251, 251), LinearGradientMode.Vertical);
+            mgraphics.FillRectangle(lgb, area);
+            mgraphics.DrawRectangle(pen, area);
+        }
+
+        private void dtgv1_Paint(object sender, PaintEventArgs e)
+        {
         }
     }
 }
+
+/*Tổng chi
+if(dtgv1.DataSource != null || dtgv2.DataSource != null)
+{
+    if (dtgv1.DataSource != null)
+    {
+        DataTable dt1 = tableCollection1[cboSheet1.SelectedItem.ToString()];
+        DataRow[] rows_1 = dt1.Select();
+        double total_1 = 0;
+
+        if (dt1.Columns.Contains("T_TONGCHI"))
+        {
+            var result = from t1 in rows_1 select new { total = t1["T_TONGCHI"] };
+            total_1 = result.AsEnumerable().Sum(t1 => Convert.ToDouble(t1.total));
+        }
+        else if (dt1.Columns.Contains("Tổng chi"))
+        {
+            var result = from t1 in rows_1 select new { total = t1["Tổng chi"] };
+            total_1 = result.AsEnumerable().Sum(t1 => Convert.ToDouble(t1.total));
+        }
+        else
+        {
+            MessageBox.Show("Dữ liệu trong file tải lên không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        functionsForm.SetTotal_1(cboSheet1.Text, total_1);
+    }
+
+    if (dtgv2.DataSource != null)
+    {
+        DataTable dt2 = tableCollection2[cboSheet2.SelectedItem.ToString()];
+        DataRow[] rows_2 = dt2.Select();
+        double total_2 = 0;
+
+        if (dt2.Columns.Contains("T_TONGCHI"))
+        {
+            var result = from t2 in rows_2 select new { total = t2["T_TONGCHI"] };
+            total_2 = result.AsEnumerable().Sum(t2 => Convert.ToDouble(t2.total));
+        }
+        else if (dt2.Columns.Contains("Tổng chi"))
+        {
+            var result = from t2 in rows_2 select new { total = t2["Tổng chi"] };
+            total_2 = result.AsEnumerable().Sum(t2 => Convert.ToDouble(t2.total));
+        }
+        else
+        {
+            MessageBox.Show("Dữ liệu trong file tải lên không đúng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        functionsForm.SetTotal_2(cboSheet2.Text, total_2);
+    }
+}
+            
+functionsForm.ShowDialog();*/

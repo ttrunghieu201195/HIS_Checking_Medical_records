@@ -62,7 +62,9 @@
             // lblTable1
             // 
             this.lblTable1.AutoSize = true;
+            this.lblTable1.BackColor = System.Drawing.Color.Transparent;
             this.lblTable1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTable1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lblTable1.Location = new System.Drawing.Point(7, 29);
             this.lblTable1.Name = "lblTable1";
             this.lblTable1.Size = new System.Drawing.Size(129, 29);
@@ -72,7 +74,9 @@
             // lblTable2
             // 
             this.lblTable2.AutoSize = true;
+            this.lblTable2.BackColor = System.Drawing.Color.Transparent;
             this.lblTable2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTable2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lblTable2.Location = new System.Drawing.Point(588, 29);
             this.lblTable2.Name = "lblTable2";
             this.lblTable2.Size = new System.Drawing.Size(204, 29);
@@ -81,19 +85,22 @@
             // 
             // btnExport
             // 
-            this.btnExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExport.Location = new System.Drawing.Point(502, 551);
+            this.btnExport.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnExport.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExport.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.btnExport.Location = new System.Drawing.Point(502, 544);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(175, 33);
+            this.btnExport.Size = new System.Drawing.Size(175, 40);
             this.btnExport.TabIndex = 12;
             this.btnExport.Text = "Xuất File Excel";
-            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.UseVisualStyleBackColor = false;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // ResultTableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1178, 596);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.lblTable2);
@@ -104,6 +111,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Kết quả kiểm tra";
             this.Load += new System.EventHandler(this.ResultTableForm_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.ResultTableForm_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvResult_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvResult_1)).EndInit();
             this.ResumeLayout(false);
