@@ -15,9 +15,9 @@ namespace Tool_BV
 {
     public partial class ResultTableForm : Form
     {
-        private CheckDataForm checkDataForm;
-        private DataTable table_1;
-        private DataTable table_2;
+        private DataTable dataTableHIS;
+        private DataTable dataTableBHXH;
+        private DataTable dataTableTongTien;
         private DataTable table1_copy;
         private DataTable table2_copy;
 
@@ -28,23 +28,29 @@ namespace Tool_BV
 
         private void ResultTableForm_Load(object sender, EventArgs e)
         {
-            table1_copy = table_1.Copy();
-            table2_copy = table_2.Copy();
+            table1_copy = dataTableHIS.Copy();
+            table2_copy = dataTableBHXH.Copy();
 
             table1_copy.TableName = "Ketqua_BenhVien";
             table2_copy.TableName = "Ketqua_BHXH";
+            dataTableTongTien.TableName = "Lech_TongTien";
         }
 
-        public void SetTable_1(DataTable table)
+        public void SetTable_HIS(DataTable table)
         {
-            table_1 = table;
-            dtgvResult_1.DataSource = table_1;
+            dataTableHIS = table;
+            dtgvResult_1.DataSource = dataTableHIS;
         }
 
-        public void SetTable_2(DataTable table)
+        public void SetTable_BHXH(DataTable table)
         {
-            table_2 = table;
-            dtgvResult_2.DataSource = table_2;
+            dataTableBHXH = table;
+            dtgvResult_2.DataSource = dataTableBHXH;
+        }
+
+        public void SetTable_TongTien(DataTable table)
+        {
+            dataTableTongTien = table;
         }
 
         public DataSet getDataSetExportToExcel()
@@ -53,7 +59,7 @@ namespace Tool_BV
 
             ds.Tables.Add(table1_copy);
             ds.Tables.Add(table2_copy);
-            
+            ds.Tables.Add(dataTableTongTien);
             return ds;
         }
 
