@@ -12,6 +12,7 @@ namespace Tool_BV
 
         // BHXH columns name
         public const string BHXH_MALIENKET_COLUMN = "Mã liên kết";
+        public const string BHXH_MAPHIEU = "Mã phiếu";
         public const string BHXH_TONGCHI_COLUMN = "Tổng chi";
 
         // HIS columns name

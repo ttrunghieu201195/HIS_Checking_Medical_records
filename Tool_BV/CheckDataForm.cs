@@ -133,6 +133,7 @@ namespace Tool_BV
                 DataColumn maLienKetColumn = new DataColumn(Constants.BHXH_MALIENKET_COLUMN);
                 dataTableBHXH.Columns.Add(new DataColumn(Constants.STT_COLUMN));
                 dataTableBHXH.Columns.Add(maLienKetColumn);
+                dataTableBHXH.Columns.Add(new DataColumn(Constants.BHXH_MAPHIEU));
                 dataTableBHXH.Columns.Add(new DataColumn(Constants.BHXH_TONGCHI_COLUMN));
                 dataTableBHXH.PrimaryKey = new DataColumn[] { maLienKetColumn };
 
@@ -149,7 +150,7 @@ namespace Tool_BV
                     foreach (DataRow dataRow in dataRowLeft)
                     {
                         string maLienKet = dataRow[Constants.BHXH_MALIENKET_COLUMN].ToString();
-                        dataTableBHXH.Rows.Add(dataRow[Constants.STT_COLUMN], maLienKet.Split('_')[0], dataRow[Constants.BHXH_TONGCHI_COLUMN]);
+                        dataTableBHXH.Rows.Add(dataRow[Constants.STT_COLUMN], maLienKet, maLienKet.Split('_')[0], dataRow[Constants.BHXH_TONGCHI_COLUMN]);
                     }
                 }
                 else if (Constants.BHXH_MALIENKET_COLUMN.Equals(keyRight))
@@ -158,7 +159,7 @@ namespace Tool_BV
                     foreach (DataRow dataRow in dataRowRight)
                     {
                         string maLienKet = dataRow[Constants.BHXH_MALIENKET_COLUMN].ToString();
-                        dataTableBHXH.Rows.Add(dataRow[Constants.STT_COLUMN], maLienKet.Split('_')[0], dataRow[Constants.BHXH_TONGCHI_COLUMN]);
+                        dataTableBHXH.Rows.Add(dataRow[Constants.STT_COLUMN], maLienKet, maLienKet.Split('_')[0], dataRow[Constants.BHXH_TONGCHI_COLUMN]);
                     }
 
                 }
@@ -173,13 +174,13 @@ namespace Tool_BV
 
                 //Console.WriteLine("----------RESULT TABLE HIS----------");
                 var tableHIS_Checked = from rowHIS in dataRowHIS
-                             join rowBHXH in dataRowBHXH on rowHIS[Constants.HIS_SOPHIEU_COLUMN] equals rowBHXH[Constants.BHXH_MALIENKET_COLUMN] into temp
+                             join rowBHXH in dataRowBHXH on rowHIS[Constants.HIS_SOPHIEU_COLUMN] equals rowBHXH[Constants.BHXH_MAPHIEU] into temp
                              from rowJoin in temp.DefaultIfEmpty()
                              select new
                              {
                                  STT = rowHIS[Constants.STT_COLUMN],
                                  BHXH_maLienKet = rowJoin?[Constants.BHXH_MALIENKET_COLUMN],
-                                 HIS_SOPHIEU = (rowJoin == null)? rowHIS[Constants.HIS_SOPHIEU_COLUMN] : null,
+                                 HIS_SOPHIEU = rowHIS[Constants.HIS_SOPHIEU_COLUMN],
                                  HIS_tongchi = rowHIS[Constants.HIS_TONGCHI_COLUMN],
                                  BHXH_tongchi = rowJoin?[Constants.BHXH_TONGCHI_COLUMN],
                                  HIS_MA_BN = rowHIS[Constants.HIS_MA_BN_COLUMN],
@@ -203,7 +204,7 @@ namespace Tool_BV
                     {
                         dataTableTongTien_Checked.Rows.Add(row.STT, row.HIS_SOPHIEU, row.HIS_tongchi, row.BHXH_maLienKet, row.BHXH_tongchi);
                     }
-                    else if(row.HIS_SOPHIEU != null)
+                    else if(row.BHXH_maLienKet is null)
                     {
                         dataTableHIS_Checked.Rows.Add(row.STT, row.HIS_SOPHIEU, row.HIS_tongchi);
                     }
@@ -211,27 +212,27 @@ namespace Tool_BV
 
 
                 //Console.WriteLine("\n\n----------RESULT TABLE 2----------");
-                var result_t2 = from t2 in dataRowBHXH
-                             join t1 in dataRowHIS on t2[Constants.BHXH_MALIENKET_COLUMN] equals t1[Constants.HIS_SOPHIEU_COLUMN] into temp
-                             from t3 in temp.DefaultIfEmpty()
+                var tableBHXH_Checked = from rowBHXH in dataRowBHXH
+                             join rowHIS in dataRowHIS on rowBHXH[Constants.BHXH_MAPHIEU] equals rowHIS[Constants.HIS_SOPHIEU_COLUMN] into temp
+                             from rowJoin in temp.DefaultIfEmpty()
                              select new
                              {
-                                 STT = t2[Constants.STT_COLUMN],
-                                 HIS_SOPHIEU = (t3 != null) ? t3[Constants.HIS_SOPHIEU_COLUMN] : null,
-                                 BHXH_maLienKet = (t3 == null) ? t2[Constants.BHXH_MALIENKET_COLUMN] : null,
-                                 HIS_tongchi = (t3 == null) ? null : t3[Constants.HIS_TONGCHI_COLUMN],
-                                 BHXH_tongchi = t2[Constants.BHXH_TONGCHI_COLUMN]
+                                 STT = rowBHXH[Constants.STT_COLUMN],
+                                 HIS_SOPHIEU = rowJoin?[Constants.HIS_SOPHIEU_COLUMN],
+                                 BHXH_maLienKet = rowBHXH[Constants.BHXH_MALIENKET_COLUMN],
+                                 HIS_tongchi = rowJoin?[Constants.HIS_TONGCHI_COLUMN],
+                                 BHXH_tongchi = rowBHXH[Constants.BHXH_TONGCHI_COLUMN]
                              };
 
                 DataTable dataTableBHXH_Checked = new DataTable();
                 dataTableBHXH_Checked = dataTableBHXH.Clone();
-                foreach (var row in result_t2)
+                foreach (var row in tableBHXH_Checked)
                 {
                     if (row.HIS_tongchi != null && Convert.ToDouble(row.HIS_tongchi) != Convert.ToDouble(row.BHXH_tongchi) && row.HIS_SOPHIEU != null)
                     {
                         //dataTableTongTien_Checked.Rows.Add(row.STT, row.HIS_SOPHIEU, row.HIS_tongchi, row.BHXH_maLienKet, row.BHXH_tongchi);
                     }
-                    else if (row.BHXH_maLienKet != null)
+                    else if (row.HIS_SOPHIEU is null)
                     {
                         dataTableBHXH_Checked.Rows.Add(row.STT, row.BHXH_maLienKet, row.BHXH_tongchi);
                     }
