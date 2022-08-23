@@ -16,7 +16,7 @@ namespace Tool_BV
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CheckDataForm());
+            Application.Run(new Container());
         }
     }
 }
